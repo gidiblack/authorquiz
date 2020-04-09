@@ -1,17 +1,102 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import App from './App';
+import AuthorQuiz from './AuthorQuiz';
 import * as serviceWorker from './serviceWorker';
+import {shuffle, sample} from 'underscore';
 
-ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
-  document.getElementById('root')
-);
+const authors = [
+  {
+    name: 'Mark Twain',
+    imageUrl: 'images/mark-twain.jpg',
+    imageSource: 'Wikimedia Commons',
+    books: ['The Adventures of Huckleberry Finn','Life on the Mississippi', 'Roughing It']
+  },{
+    name: "Stephen King",
+    imageUrl: 'images/stephen-king.jpg',
+    imageSource: 'Wikimedia Commons',
+    books: ['IT', 'The Shining', 'Pet Cemetary']
+  },{
+    name: "J.K. Rowling",
+    imageUrl: 'images/jk-rowling.jpg',
+    imageSource: 'Wikimedia Commons',
+    books: ['Harry Potter', 'The Silkworm']
+  },{
+    name: "Charles Dickens",
+    imageUrl: 'images/charles-dickens.jpg',
+    imageSource: 'Wikimedia Commons',
+    books: ['Oliver Twist', 'David Copperfield']
+  },{
+    name: "George Orwell",
+    imageUrl: 'images/george-orwell.jpg',
+    imageSource: 'Wikimedia Commons',
+    books: ['Animal Farm', 'Burmese Days']
+  },{
+    name: "J.R.R. Tolkien",
+    imageUrl: 'images/Tolkien.jpg',
+    imageSource: 'Wikimedia Commons',
+    books: ['Lord of the Rings', 'The Children of Hurin']
+  },{
+    name: "George R.R. Martin",
+    imageUrl: 'images/george-martin.jpg',
+    imageSource: 'Wikimedia Commons',
+    books: ['A Game of Thrones', 'A Storm of Swords']
+  },{
+    name: "Chinua Achebe",
+    imageUrl: 'images/chinua-achebe.jpg',
+    imageSource: 'Wikimedia Commons',
+    books: ['A Man of the People', 'Things Fall Apart']
+  },{
+    name: "Wole Soyinka",
+    imageUrl: 'images/wole-soyinka.jpg',
+    imageSource: 'Wikimedia Commons',
+    books: ['The Trials of Brother Jero', 'A Shuttle in the Crypt']
+  },{
+    name: "William Shakespeare",
+    imageUrl: 'images/william-shakespeare.jpg',
+    imageSource: 'Wikimedia Commons',
+    books: ['Macbeth', 'Othello', 'Romeo and Juliet']
+  }
+];
 
+function getTurnData(authors){
+  //concatunate author books
+  const allBooks = authors.reduce(function (p, c, i){
+    return p.concat(c.books);
+  }, []);
+  //shuffle books with underscore
+  const fourRandomBooks = shuffle(allBooks).slice(0,4);
+  const answer = sample(fourRandomBooks);
+
+  return {
+    books: fourRandomBooks,
+    author: authors.find((author) =>
+        author.books.some((title) =>
+        title === answer ))
+  }
+}
+
+const state = {
+  turnData: getTurnData(authors),
+  highlight: ''
+};
+
+function onAnswerSelected(answer){
+  const isCorrect = state.turnData.author.books.some((book) => book === answer); 
+  state.highlight = isCorrect ? 'correct' : 'wrong';
+  render();
+}
+
+function render() {
+  ReactDOM.render(
+    <React.StrictMode>
+      <AuthorQuiz {...state} onAnswerSelected={onAnswerSelected} />
+    </React.StrictMode>,
+    document.getElementById('root')
+  );
+}
+render();
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.
 // Learn more about service workers: https://bit.ly/CRA-PWA
-serviceWorker.unregister();
+serviceWorker.register();
