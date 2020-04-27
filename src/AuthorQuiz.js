@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types'; 
 import './AuthorQuiz.css';
 import './bootstrap.min.css';
@@ -55,9 +56,14 @@ Turn.propTypes = {
   highlight: PropTypes.string
 }
 
-function Continue() {
+function Continue({ show, onContinue }) {
   return(
-    <div></div>
+    <div className="row continue">
+      {show ? <div className="col-11">
+        <button className="btn btn-primary btn-lg float-right" onClick={onContinue} >Continue</button>
+      </div>
+      : null }
+    </div>
   );
 }
 
@@ -65,18 +71,19 @@ function Footer() {
   return(
     <div id="footer" className="row">
       <div className="col-10 offset-1">
-        <p className="text-muted credit">All images are from <a href="http://commons.wikipedia.org/wiki/">Wikimedia Commons</a> and are in the public domain</p>
+        <p className="text-muted credit">All images are from <a target="_blank" href="http://commons.wikipedia.org/wiki/">Wikimedia Commons</a> and are in the public domain</p>
       </div>
     </div>
   );
 }
 
-function AuthorQuiz({turnData, highlight, onAnswerSelected}) {
+function AuthorQuiz({turnData, highlight, onAnswerSelected, onContinue}) {
     return (
       <div className="container-fluid">
         <Hero/>
         <Turn {...turnData} highlight={highlight} onAnswerSelected={onAnswerSelected} />
-        <Continue />
+        <Continue show={highlight === 'correct'} onContinue={onContinue} />
+        <p><Link to='/add'>Add an author</Link> </p>
         <Footer />
       </div>
     );
