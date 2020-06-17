@@ -5,7 +5,8 @@ import * as Redux from 'redux';
 import * as ReactRedux from 'react-redux';
 import './index.css';
 import AuthorQuiz from './AuthorQuiz';
-import * as serviceWorker from './serviceWorker';
+// import * as serviceWorker from './serviceWorker';
+import { unregister } from './serviceWorker';
 import {shuffle, sample} from 'underscore';
 
 const authors = [
@@ -127,4 +128,4 @@ ReactDOM.render(
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.
 // Learn more about service workers: https://bit.ly/CRA-PWA
-serviceWorker.register();
+unregister();
