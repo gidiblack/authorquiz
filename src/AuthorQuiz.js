@@ -72,7 +72,7 @@ function Footer() {
   return(
     <div id="footer" className="row">
       <div className="col-10 offset-1">
-        {/* <p><Link to='/add'>Add an author</Link> </p> */}
+        <p><Link to='/add'>Add an author</Link> </p>
         <p className="text-muted credit">All images are from <a href="http://commons.wikipedia.org/wiki/">Wikimedia Commons</a> and are in the public domain</p>
       </div>
     </div>
