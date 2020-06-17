@@ -116,7 +116,7 @@ function App() {
 
 ReactDOM.render(
   <React.StrictMode>
-    <BrowserRouter>
+    <BrowserRouter basname="/authorquiz">
       <React.Fragment>
         <Route exact path="/" component={App} />
         <Route path="/add" component={AddAuthorForm} />
