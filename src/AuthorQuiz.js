@@ -1,10 +1,11 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import { connect } from 'react-redux';
-import PropTypes from 'prop-types'; 
-import './AuthorQuiz.css';
-import './bootstrap.min.css';
+import React from 'react'; // Import react app - necessary for every project
+import { Link } from 'react-router-dom'; // Import link from react-router-dom
+import { connect } from 'react-redux'; // connect react component to react redux store
+import PropTypes from 'prop-types'; // Import proptypes for validation
+import './AuthorQuiz.css'; // Import stylesheet
+import './bootstrap.min.css'; // Import bootstrap
 
+// Hero component 
 function Hero() {
   return (
     <div className="row">
@@ -16,6 +17,7 @@ function Hero() {
   );
 }
 
+// Book component
 function Book({title, onClick}){
   return (
     <div className="answer" onClick={() => {onClick(title);}} >
@@ -24,7 +26,9 @@ function Book({title, onClick}){
   )
 }
 
+// Turn component - 
 function Turn({author, books, highlight, onAnswerSelected}) {
+  // mapping function for background color
   function highlightToBgColor(highlight){
     const mapping = {
       'none': '',
@@ -37,9 +41,10 @@ function Turn({author, books, highlight, onAnswerSelected}) {
   return(
     <div className="container">
       <div className="row turn" style={{backgroundColor: highlightToBgColor(highlight)}}>
-        <div className="col-md-4 offset-1">
+        <div className="col-md-4">
           <img src={author.imageUrl} className="authorimage" alt="Author"/>
         </div>
+        {/* map over the collection of books and render the titles */}
         <div className="col-md-6 mt-4">
           {books.map((title) => <Book title={title} key={title} onClick={onAnswerSelected} />)}
         </div>
@@ -47,6 +52,7 @@ function Turn({author, books, highlight, onAnswerSelected}) {
     </div>
   );
 }
+// propTypes validation
 Turn.propTypes = {
   author: PropTypes.shape({
     name: PropTypes.string.isRequired,
@@ -70,6 +76,7 @@ function Continue({ show, onContinue }) {
   );
 }
 
+// Footer component
 function Footer() {
   return(
     <div id="footer" className="row">
@@ -81,6 +88,7 @@ function Footer() {
   );
 }
 
+// input the content of the store that's needed for the AuthorQuiz component
 function mapStateToProps(state){
   return {
     turnData: state.turnData,
@@ -88,6 +96,7 @@ function mapStateToProps(state){
   };
 }
 
+// mapping events to actions we want to publish to redux store
 function mapDispatchToProps(dispatch){
   return{
     onAnswerSelected: (answer) => {
@@ -99,16 +108,17 @@ function mapDispatchToProps(dispatch){
   };
 }
 
+// This renders the AuthorQuiz App, all props should be passed here as well as on their components
 const AuthorQuiz = connect(mapStateToProps, mapDispatchToProps)(
-function ({turnData, highlight, onAnswerSelected, onContinue}) {
-    return (
-      <div className="container-fluid">
-        <Hero/>
-        <Turn {...turnData} highlight={highlight} onAnswerSelected={onAnswerSelected} />
-        <Continue show={highlight === 'correct'} onContinue={onContinue} />
-        <Footer />
-      </div>
-    );
+  function ({turnData, highlight, onAnswerSelected, onContinue}) {
+      return (
+        <div className="container-fluid">
+          <Hero/>
+          <Turn {...turnData} highlight={highlight} onAnswerSelected={onAnswerSelected} />
+          <Continue show={highlight === 'correct'} onContinue={onContinue} />
+          <Footer />
+        </div>
+      );
 });
 
 export default AuthorQuiz;

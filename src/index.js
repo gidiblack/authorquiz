@@ -1,14 +1,15 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { BrowserRouter, Route } from 'react-router-dom';
-import * as Redux from 'redux';
-import * as ReactRedux from 'react-redux';
+import { BrowserRouter, Route } from 'react-router-dom'; // "npm install react-router-dom" for routing
+import * as Redux from 'redux'; // "nmp install redux" for app state container
+import * as ReactRedux from 'react-redux'; // 
 import './index.css';
 import AuthorQuiz from './AuthorQuiz';
 // import * as serviceWorker from './serviceWorker';
 import { unregister } from './serviceWorker';
-import {shuffle, sample} from 'underscore';
+import {shuffle, sample} from 'underscore'; //Import underscore library to shuffle data - run "npm install underscore"
 
+// define authors prop data
 const authors = [
   {
     name: 'Mark Twain',
@@ -70,13 +71,14 @@ function getTurnData(authors){
   }, []);
   //shuffle books with underscore
   const fourRandomBooks = shuffle(allBooks).slice(0,4);
+  // underscore sample function used to choose the correct answer
   const answer = sample(fourRandomBooks);
 
   return {
     books: fourRandomBooks,
     author: authors.find((author) =>
         author.books.some((title) =>
-        title === answer ))
+        title === answer )) // using find method on the authors array to find an author such that the author's books contains a book where the title is equal to "answer"
   }
 }
 
@@ -109,6 +111,7 @@ function AddAuthorForm({match}){
 }
 
 function App() {
+  // wrap this component in a reactRedux provider cos it needs access to the store(state container)
   return <ReactRedux.Provider store={store}>
     <AuthorQuiz />
   </ReactRedux.Provider>;
@@ -117,6 +120,7 @@ function App() {
 ReactDOM.render(
   <React.StrictMode>
     <BrowserRouter>
+    {/* grouping multiple routes under a single parent using a component that has no DOM representation(react fragment)*/}
       <React.Fragment>
         <Route exact path="/authorquiz" component={App} />
         <Route path="/add" component={AddAuthorForm} />

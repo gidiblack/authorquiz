@@ -1,10 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import AuthorQuiz from './AuthorQuiz';
-import Enzyme, {mount, shallow, render} from 'enzyme';
+import Enzyme, {mount, shallow, render} from 'enzyme'; // "npm install enzyme" for testing
 import Adapter from 'Enzyme-adapter-react-16';
+// connect enzyme to the enzyme react adapter
 Enzyme.configure({ adapter: new Adapter() });
 
+// tests requires a state, this is a dummy state
 const state = {
   turnData: {
     books: ['The Shining', 'IT', 'The Adventures of Huckleberry Finn', 'Lord of the Rings'],
@@ -63,7 +65,7 @@ describe("Author Quiz", () =>{
 
   describe("When the first answer is selected", ()=>{
     let wrapper;
-    const handleAnswerSelected = jest.fn();
+    const handleAnswerSelected = jest.fn(); // jest.fn() creates a mock function
 
     beforeAll(()=>{
       wrapper = mount(
@@ -72,7 +74,7 @@ describe("Author Quiz", () =>{
       wrapper.find('.answer').first().simulate('click');
     });
 
-    it("onAnswerSelected shoulb be called", ()=>{
+    it("onAnswerSelected should be called", ()=>{
       expect(handleAnswerSelected).toHaveBeenCalled();
     });
 
